@@ -14,6 +14,9 @@ app.get("/", (req, res) => {
     res.json({message : "Hello From POS server!"});
 })
 
+// Other End Points
+app.use("/api/users", require("./routes/userRoute"));
+
 
 // Global Error Handler
 app.use(globalErrorHandler);
