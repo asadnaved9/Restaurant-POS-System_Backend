@@ -6,13 +6,20 @@ const config = require("./config/config");
 const globalErrorHandler = require("./middlewares/globalErrorHandler");
 const createHttpError = require("http-errors");
 
+
 const PORT = config.port;
 connectDB();
+
+// Middleware to parse JSON bodies
+app.use(express.json());
 
 // Root End Point
 app.get("/", (req, res) => {
     res.json({message : "Hello From POS server!"});
 })
+
+// Other Endpoints
+app.use("/api/user", require("./routes/userRoute"));
 
 
 // Global Error Handler
