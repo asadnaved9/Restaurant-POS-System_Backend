@@ -19,5 +19,5 @@ app.get("/", (req, res) => {
 app.use(globalErrorHandler);
 
 app.listen(PORT, () => {
-    console.log(`POS Server is listening on PORT ${PORT}`);
+    console.log(`✅ POS Server is listening on PORT ${PORT}`);
 })
