@@ -5,12 +5,14 @@ const connectDB = require("./config/database");
 const config = require("./config/config");
 const globalErrorHandler = require("./middlewares/globalErrorHandler");
 const createHttpError = require("http-errors");
+const cookieParser = require("cookie-parser");
 
 const PORT = config.port;
 connectDB();
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(cookieParser());
 
 // Root End Point
 app.get("/", (req, res) => {

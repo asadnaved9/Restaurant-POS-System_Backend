@@ -10,13 +10,13 @@ const register = async (req, res, next) => {
 
     if (!name || !email || !phone || !password || !role) {
       const error = createHttpError(400, "All fields are required");
-      next(error);
+      return next(error);
     }
 
     const isUserPresent = await User.findOne({ email });
     if (isUserPresent) {
       const error = createHttpError(400, "User already exists");
-      next(error);
+      return next(error);
     }
 
     const user = { name, email, phone, password, role };
@@ -40,18 +40,18 @@ const login = async (req, res, next) => {
 
         if(!email || !password) {
             const error = createHttpError(400, "All fields are required!");
-            next(error);
+            return next(error);
         }
 
         const isUserPresent = await User.findOne({email});
         if(!isUserPresent){
             const error = createHttpError(401, "Invalid Credentials");
-            next(error);
+            return next(error);
         }
          const isMatch = await bcrypt.compare(password, isUserPresent.password);
         if(!isMatch){
             const error = createHttpError(401, "Invalid Credentials");
-            next(error);
+            return next(error);
         }
 
         const accessToken = jwt.sign({_id: isUserPresent._id}, config.accessTokenSecret, {
@@ -77,4 +77,15 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+const getUserData = async (req, res, next) => {
+    try {
+        
+        const user = await User.findById(req.user._id);
+        res.status(200).json({success: true, data: user});
+
+    } catch (error) {
+      next(error);
+    }
+}
+
+module.exports = { register, login, getUserData };
